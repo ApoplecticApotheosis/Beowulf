@@ -39,7 +39,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         projectile.x += -5
         projectile.scale += 1
         scene.cameraShake(1, 200)
-        pause(200)
+        pause(150)
         projectile.destroy()
         mySprite.setImage(img`
             . . . . . c c . . . . . 
@@ -99,7 +99,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         projectile.x += 5
         projectile.scale += 1
         scene.cameraShake(1, 200)
-        pause(200)
+        pause(150)
         projectile.destroy()
         mySprite.setImage(img`
             . . . . . c c . . . . . 
@@ -165,16 +165,104 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
         `)
     LeftLast = 1
 })
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
+    scene.cameraShake(3, 200)
+    mySprite.startEffect(effects.blizzard, 500)
+    if (LeftLast == 0) {
+        mySprite.setImage(img`
+            . . . . 2 c c 2 . . . . 
+            . . . 2 c c c c 2 . . . 
+            . . 2 c c c c c c 2 . . 
+            . . 2 c c c c c c 2 . . 
+            . . 2 b b 5 5 b b 2 . . 
+            . . 2 b f 5 f 5 b 2 2 e 
+            . . 2 b 5 5 5 5 b e e 2 
+            . . 2 b 5 5 5 5 b c e 2 
+            . . 2 2 b 5 5 b c c e 2 
+            . 2 b a a a a a a b 2 . 
+            2 b b b a a a a b b b 2 
+            2 b b b b b b b b b b 2 
+            2 5 5 b b b b b b 5 5 2 
+            2 5 5 4 4 c 4 4 4 5 5 2 
+            . 2 2 e e 2 2 e e 2 2 . 
+            . . 2 e e 2 2 e e 2 . . 
+            `)
+    } else if (LeftLast == 1) {
+        mySprite.setImage(img`
+            . . . . 2 c c 2 . . . . 
+            . . . 2 c c c c 2 . . . 
+            . . 2 c c c c c c 2 . . 
+            . . 2 c c c c c c 2 . . 
+            . . 2 b b 5 5 b b 2 . . 
+            e 2 2 b 5 f 5 f b 2 . . 
+            2 e e b 5 5 5 5 b 2 . . 
+            2 e c b 5 5 5 5 b 2 . . 
+            2 e c c b 5 5 b 2 2 . . 
+            . 2 b a a a a a a b 2 . 
+            2 b b b a a a a b b b 2 
+            2 b b b b b b b b b b 2 
+            2 5 5 b b b b b b 5 5 2 
+            2 5 5 4 4 4 c 4 4 5 5 2 
+            . 2 2 e e 2 2 e e 2 2 . 
+            . . 2 e e 2 2 e e 2 . . 
+            `)
+    } else {
+    	
+    }
+    pause(500)
+    if (LeftLast == 0) {
+        mySprite.setImage(img`
+            . . . . . c c . . . . . 
+            . . . . c c c c . . . . 
+            . . . c c c c c c . . . 
+            . . . c c c c c c . . . 
+            . . . b b 5 5 b b . . . 
+            . . . b f 5 f 5 b . . e 
+            . . . b 5 5 5 5 b e e . 
+            . . . b 5 5 5 5 b c e . 
+            . . . . b 5 5 b c c e . 
+            . . b a a a a a a b . . 
+            . b b b a a a a b b b . 
+            . b b b b b b b b b b . 
+            . 5 5 b b b b b b 5 5 . 
+            . 5 5 4 4 c 4 4 4 5 5 . 
+            . . . e e . . e e . . . 
+            . . . e e . . e e . . . 
+            `)
+    } else if (LeftLast == 1) {
+        mySprite.setImage(img`
+            . . . . . c c . . . . . 
+            . . . . c c c c . . . . 
+            . . . c c c c c c . . . 
+            . . . c c c c c c . . . 
+            . . . b b 5 5 b b . . . 
+            e . . b 5 f 5 f b . . . 
+            . e e b 5 5 5 5 b . . . 
+            . e c b 5 5 5 5 b . . . 
+            . e c c b 5 5 b . . . . 
+            . . b a a a a a a b . . 
+            . b b b a a a a b b b . 
+            . b b b b b b b b b b . 
+            . 5 5 b b b b b b 5 5 . 
+            . 5 5 4 4 4 c 4 4 5 5 . 
+            . . . e e . . e e . . . 
+            . . . e e . . e e . . . 
+            `)
+    } else {
+    	
+    }
+})
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    game.reset()
+	
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeScoreBy(1)
     myEnemy.destroy(effects.fire, 200)
 })
 let projectile: Sprite = null
-let LeftLast = 0
 let myEnemy: Sprite = null
+let LeftLast = 0
 let mySprite: Sprite = null
 mySprite = sprites.create(img`
     . . . . . c c . . . . . 
@@ -194,11 +282,12 @@ mySprite = sprites.create(img`
     . . . e e . . e e . . . 
     . . . e e . . e e . . . 
     `, SpriteKind.Player)
-controller.moveSprite(mySprite)
+controller.moveSprite(mySprite, 100, 100)
 tiles.setCurrentTilemap(tilemap`arrival0`)
 tiles.placeOnRandomTile(mySprite, assets.tile`myTile0`)
 scene.cameraFollowSprite(mySprite)
 info.setScore(0)
+LeftLast = 0
 myEnemy = sprites.create(img`
     . . . 1 1 1 1 . . . . . 
     . . 1 1 1 1 1 1 . . . . 
@@ -218,4 +307,8 @@ myEnemy = sprites.create(img`
     . . 1 1 . . 1 1 . . . . 
     `, SpriteKind.Enemy)
 tiles.placeOnRandomTile(myEnemy, assets.tile`grass`)
-LeftLast = 0
+myEnemy.follow(mySprite, 25)
+info.setLife(3)
+forever(function () {
+	
+})
